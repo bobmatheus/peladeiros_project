@@ -1,4 +1,5 @@
 {% load static %}
+{% block page_class %}reserva-list{% endblock %}
 {% load tz %} {% if reservas %}
     <div class="reservations-list">
         {% for reserva in reservas %}

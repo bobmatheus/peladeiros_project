@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block page_class %}detalhe-mensagem{% endblock %}
 {% block title %}Detalhe da Mensagem - Peladeiros{% endblock %}
 
 {% block content %}
@@ -13,46 +14,13 @@
                     <i class="fas fa-arrow-left"></i> Voltar para a Lista
                 </a>
             </div>
-            <div class="card-body">
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-success">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-
-                <p><strong>De:</strong> {{ mensagem.nome }}</p>
-                <p><strong>Email:</strong> <a href="mailto:{{ mensagem.email }}">{{ mensagem.email }}</a></p>
-                <p><strong>Telefone:</strong> {{ mensagem.telefone|default:"Não informado" }}</p>
-                <p><strong>Data de Envio:</strong> {{ mensagem.data_envio|date:"d/m/Y \à\s H:i" }}</p>
-                <p><strong>Assunto:</strong> {{ mensagem.get_assunto_display }}</p>
-                <p><strong>Status:</strong>
-                    {% if mensagem.lida %}
-                        <span class="badge bg-success">Lida</span>
-                    {% else %}
-                        <span class="badge bg-warning">Não Lida</span>
-                    {% endif %}
-                </p>
-                <hr>
-                <h5>Mensagem:</h5>
-                <p style="white-space: pre-wrap; background-color: #f8f9fa; padding: 15px; border-radius: 5px;">{{ mensagem.mensagem }}</p>
-                
-                <hr>
-                
-                <div class="d-flex justify-content-end gap-2">
-                    {% if not mensagem.lida %}
-                    <form action="{% url 'contato:marcar_como_lida' mensagem.id %}" method="post" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-success">Marcar como Lida</button>
-                    </form>
-                    {% endif %}
-                    
-                    <form action="{% url 'contato:deletar_mensagem' mensagem.id %}" method="post" class="d-inline" onsubmit="return confirm('Tem a certeza que deseja apagar esta mensagem permanentemente?');">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Apagar Mensagem</button>
-                    </form>
-                </div>
+            <div class="card-body" id="mensagem-detalhe-container">
+                <p class="loading-message">Carregando mensagem...</p>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Script JS para preencher detalhes da mensagem -->
+<script src="{% static 'js/detalhe_mensagem.js' %}"></script>
 {% endblock %}

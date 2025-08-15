@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block page_class %}login{% endblock %}
 
 {% block title %}Entrar - Peladeiros{% endblock %}
 
@@ -11,34 +12,15 @@
                 <h2 class="section-title">Aceder à sua Conta</h2>
             </div>
             <div class="form-body">
-                
-                {% if messages %}
-                    {% for message in messages %}
-                        {% if message.tags == 'error' %}
-                            <div class="alert alert-danger">{{ message }}</div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-                <form method="post" action="{% url 'usuarios:entrar' %}">
-                    {% csrf_token %}
-
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {% for error in form.non_field_errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
+                <form id="login-form" novalidate>
                     <div class="form-group mb-3">
-                        <label for="{{ form.username.id_for_label }}">E-mail</label>
-                        {{ form.username }}
+                        <label for="username">E-mail</label>
+                        <input type="email" id="username" name="username" class="form-control">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="{{ form.password.id_for_label }}">Senha</label>
-                        {{ form.password }}
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password" class="form-control">
                     </div>
 
                     <div class="d-grid gap-2">
@@ -46,11 +28,15 @@
                     </div>
 
                     <div class="text-center mt-3">
-                        <p>Não tem uma conta? <a href="{% url 'usuarios:criar_conta' %}">Crie uma agora</a></p>
-                        </div>
+                        <p>Não tem uma conta? 
+                            <a href="{% url 'usuarios:criar_conta' %}">Crie uma agora</a>
+                        </p>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </section>
+
+<script src="{% static 'js/app.js' %}"></script>
 {% endblock %}

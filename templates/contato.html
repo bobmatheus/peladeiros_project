@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block page_class %}contato{% endblock %}
 {% block title %}Contato - Peladeiros{% endblock %}
 
 {% block content %}
@@ -34,43 +35,9 @@
                     </div>
                 </div>
             </div>
+
             <div class="contact-form">
-                <h3>Envie uma Mensagem</h3>
-
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-success" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
-                <form method="post">
-                    {% csrf_token %}
-                    
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label for="{{ form.nome.id_for_label }}">Nome</label>
-                        {{ form.nome }}
-                    </div>
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label for="{{ form.email.id_for_label }}">E-mail</label>
-                        {{ form.email }}
-                    </div>
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label for="{{ form.telefone.id_for_label }}">Telefone</label>
-                        {{ form.telefone }}
-                    </div>
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label for="{{ form.assunto.id_for_label }}">Assunto</label>
-                        {{ form.assunto }}
-                    </div>
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label for="{{ form.mensagem.id_for_label }}">Mensagem</label>
-                        {{ form.mensagem }}
-                    </div>
-                    
-                    <button type="submit" class="btn">Enviar Mensagem</button>
-                </form>
+                <!-- Aqui vai o formulário -->
             </div>
         </div>
     </div>
