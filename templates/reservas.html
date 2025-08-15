@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block page_class %}reservas{% endblock %}
 {% block title %}Reservas - Peladeiros{% endblock %}
 
 {% block content %}
@@ -9,67 +9,12 @@
         <h2 class="section-title">Faça sua Reserva</h2>
         <div class="reservation-grid">
 
-            <div class="items-column">
-
-                {% for espaco in espacos %}
-                <div class="item-card" data-espaco-id="{{ espaco.id }}" data-modelo="{{ espaco.modelo_de_cobranca }}">
-                    <div class="item-main-content">
-                        <div class="item-img">
-                            {% if espaco.foto %}
-                                <img src="{{ espaco.foto.url }}" alt="Foto de {{ espaco.nome }}">
-                            {% else %}
-                                <img src="{% static 'images/default-image.png' %}" alt="Imagem não disponível">
-                            {% endif %}
-                        </div>
-                        <div class="item-content">
-                            <h3>{{ espaco.nome }}</h3>
-                            <p>{{ espaco.descricao }}</p>
-                            <div class="price price-display">
-                                {% if espaco.preco_minimo %}
-                                    A partir de R$ {{ espaco.preco_minimo|stringformat:"d" }}<span> / {% if espaco.modelo_de_cobranca == 'hora' %}hora{% else %}período{% endif %}</span>
-                                {% else %}
-                                    <span>Preço sob consulta</span>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="date-picker">
-                        <h4 class="date-picker-title">Escolha uma Data e Horário</h4>
-                        <div class="calendar-header">
-                            <button class="prev-month-btn"><i class="fas fa-chevron-left"></i></button>
-                            <h3 class="current-month">Julho 2025</h3>
-                            <button class="next-month-btn"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                        <div class="calendar"></div>
-                        <h4 class="time-title">Horários/Períodos Disponíveis</h4>
-                        <div class="time-slots">
-                            </div>
-
-                        <div class="selected-price" style="display: flex; justify-content: flex-end; align-items: center; margin-top: 20px; padding: 10px 0; border-top: 1px solid #eee; min-height: 40px;">
-                            <span style="font-weight: 600; margin-right: 10px; font-size: 1.1rem; color: var(--dark);">Valor:</span>
-                            <strong class="selected-price-value" style="font-size: 1.8rem; color: var(--primary);">--</strong>
-                        </div>
-                        
-                        <div class="card-footer" style="margin-top: 10px;">
-                            <button class="btn add-to-cart"
-                                    style="width: 100%; padding: 15px; font-size: 1.1rem;"
-                                    data-item="{{ espaco.nome }}"
-                                    data-price="0">
-                                Adicionar ao Carrinho
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-                {% empty %}
-                <div class="item-card">
-                    <p style="text-align: center; width: 100%; padding: 20px;">
-                        Nenhum espaço disponível para reserva no momento. Por favor, volte mais tarde.
-                    </p>
-                </div>
-                {% endfor %}
+            <!-- Lista de Espaços - Vai ser preenchida via JS -->
+            <div class="items-column" id="espacos-container">
+                <div class="loading-message">Carregando espaços...</div>
             </div>
 
+            <!-- Carrinho -->
             <div class="cart-sidebar">
                 <div class="cart-header">
                     <h2><i class="fas fa-shopping-cart"></i> Seu Carrinho</h2>
@@ -82,13 +27,14 @@
                     <span>Total:</span>
                     <span id="cart-total">R$ 0,00</span>
                 </div>
-                <button class="btn checkout-btn">Finalizar Reserva</button>
+                <button class="btn checkout-btn" id="checkout-btn">Finalizar Reserva</button>
             </div>
 
         </div>
     </div>
 </section>
 
+<!-- Modal de Pagamento -->
 <div class="payment-modal-overlay" id="payment-modal-overlay">
     <div class="payment-modal-content">
         <div class="payment-modal-header">
@@ -164,13 +110,7 @@
     </div>
 </div>
 
-
-<script>
-    const isUserAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
-    const regrasPrecoHora = JSON.parse('{{ regras_preco_hora_json|safe }}');
-    const regrasPrecoPeriodo = JSON.parse('{{ regras_preco_periodo_json|safe }}');
-    const periodos = JSON.parse('{{ periodos_json|safe }}');
-    const indisponibilidades = JSON.parse('{{ indisponibilidades_json|safe }}');
-</script>
+<!-- Script para buscar os dados da API -->
+<script src="{% static 'js/reservas.js' %}"></script>
 
 {% endblock %}
